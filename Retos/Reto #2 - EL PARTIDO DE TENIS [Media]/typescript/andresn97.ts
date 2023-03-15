@@ -1,47 +1,45 @@
 
-type tenisPoints =
-    'Love' | 15 | 30 | 40 |
-    'Deuce' | 'Ventaja P1' | 'Ventaja P2' | 'Ha ganado el P1' |
-    'Ha ganado el P2';
+const tenisPoints = ['Love', '15', '30', '40', 'Deuce'];
 
-const pointsSecuence = ( gameSecuence: string[] ): void => {
-    let firstPlayerPoints: tenisPoints = 'Love';
-    let secondPlayerPoints: tenisPoints = 'Love';
-    gameSecuence.forEach( winner => {
-        if ( 'P1' ) firstPlayerPoints = getPointsAdded(
-            firstPlayerPoints, [ 'P1', secondPlayerPoints ]
-        );
-        if ( 'P2' ) secondPlayerPoints = getPointsAdded(
-            secondPlayerPoints, [ 'P2', firstPlayerPoints ]
-        );
-        console.log(firstPlayerPoints)
-        console.log(secondPlayerPoints)
-    })
+const pointsSecuence = ( winnersSecuence: string[] ): void => {
+
+    let firstPlayerPoints: number = 0;
+    let secondPlayerPoints: number = 0;
+    let isFinished: boolean = false;
+
+    winnersSecuence.forEach(winner => {
+
+        if (!isFinished) {
+
+            (winner === 'P1')
+                ? firstPlayerPoints++
+                : secondPlayerPoints++
+
+            if (firstPlayerPoints == secondPlayerPoints && firstPlayerPoints == 3)
+                console.log(tenisPoints[4])
+
+            if (firstPlayerPoints <= 3 && secondPlayerPoints <= 3) {
+                if (firstPlayerPoints != secondPlayerPoints)
+                    console.log(`${tenisPoints[firstPlayerPoints]} - ${tenisPoints[secondPlayerPoints]}`)
+            }
+            if (firstPlayerPoints >= 4 || secondPlayerPoints >= 4) {
+
+                if (firstPlayerPoints - 1 == secondPlayerPoints) {
+                    console.log('Ventaja P1');
+                } else if (secondPlayerPoints - 1 == firstPlayerPoints) {
+                    console.log('Ventaja P2');
+                } else {
+                    if (firstPlayerPoints > secondPlayerPoints) console.log('Ha ganado el P1');
+                    else if (secondPlayerPoints > firstPlayerPoints) console.log('Ha ganado el P2');
+                    else console.log(tenisPoints[4]);
+                }
+
+            }
+
+        }
+
+    });
 }
 
-const getPointsAdded = (
-    playerPoints: tenisPoints,
-    referencePlayerPoints: [ string, tenisPoints ]
-): tenisPoints => {
-    let referencePlayerName: string = referencePlayerPoints[0];
-    let secondPlayerPoints: tenisPoints = referencePlayerPoints[1];
+pointsSecuence(["P1", "P1", "P2", "P2", "P1", "P2", "P1", "P2", 'P1', 'P2', 'P1', 'P1']);
 
-    if ( playerPoints === 'Love' ) return 15;
-    if ( playerPoints === 15 ) return 30;
-    if ( playerPoints === 30 ) return 40;
-    if ( playerPoints === secondPlayerPoints ) return "Deuce";
-    if ( playerPoints === "Deuce" && secondPlayerPoints === "Deuce" )
-        return ( referencePlayerName === 'P1' ? "Ventaja P1" : "Ventaja P2" );
-    if ( referencePlayerName === 'P1' ) {
-        if ( playerPoints === 'Ventaja P1' && secondPlayerPoints === 'Deuce' ) return "Ha ganado el P1"
-    }
-    if ( referencePlayerName === 'P2' ) {
-        if ( playerPoints === 'Ventaja P2' && secondPlayerPoints === 'Deuce' ) return "Ha ganado el P2"
-    }
-}
-
-// const getPlayersPoint = ( firstPlayerPoints: number, secondPlayerPoints: number ): string => {
-//
-//
-//
-// }
